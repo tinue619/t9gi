@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расчет длины тяг козырька</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+        }
+        
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e5e7;
+            overflow: hidden;
+        }
+        
+        .header {
+            padding: 40px 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #f5f5f7;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            color: #86868b;
+            font-weight: 400;
+        }
+        
+        .content {
+            padding: 32px 40px;
+        }
+        
+        .inputs-section {
+            margin-bottom: 40px;
+        }
+        
+        .inputs-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 400;
+            background: white;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        
+        .results-section {
+            margin-bottom: 40px;
+        }
+        
+        .result {
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            border: 1px solid #e5e5e7;
+        }
+        
+        .result h3 {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #86868b;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            letter-spacing: -0.01em;
+        }
+        
+        .schema-section {
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e5e5e7;
+        }
+        
+        .schema-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #1d1d1f;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .schema {
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            
+            .container {
+                border-radius: 12px;
+            }
+            
+            .header {
+                padding: 32px 24px 20px;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .inputs-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .result-value {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Расчет тяг</h1>
+            <p class="subtitle">Козырьки и навесы</p>
+        </div>
+        
+        <div class="content">
+            <div class="inputs-section">
+                <div class="inputs-row">
+                    <div class="input-group">
+                        <label for="height">Высота</label>
+                        <input type="number" id="height" value="500" step="10" min="100" oninput="calculate()" placeholder="мм">
+                    </div>
+                    <div class="input-group">
+                        <label for="depth">Вылет</label>
+                        <input type="number" id="depth" value="500" step="10" min="100" oninput="calculate()" placeholder="мм">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="result">
+                    <h3>Центральная тяга</h3>
+                    <div class="result-value" id="center_cable">622 мм</div>
+                </div>
+                
+                <div class="result">
+                    <h3>Крайние тяги</h3>
+                    <div class="result-value" id="side_cables">629 мм</div>
+                </div>
+            </div>
+            
+            <div class="schema-section">
+                <div class="schema-title">Схема конструкции</div>
+                <div class="schema">
+                    <svg width="400" height="220" viewBox="0 0 400 220" style="max-width: 100%; height: auto;">
+                        <!-- Козырек в перспективе -->
+                        <!-- Верхняя поверхность -->
+                        <path d="M 60 160 L 340 160 L 320 145 L 80 145 Z" fill="#f5f5f7" stroke="#1d1d1f" stroke-width="1"/>
+                        
+                        <!-- Нижняя поверхность -->
+                        <path d="M 60 164 L 340 164 L 320 149 L 80 149 Z" fill="#e5e5e7" stroke="#86868b" stroke-width="0.5"/>
+                        
+                        <!-- Передний торец -->
+                        <path d="M 60 160 L 60 164 L 340 164 L 340 160 Z" fill="#d2d2d7" stroke="#86868b" stroke-width="0.5"/>
+                        
+                        <!-- Левый торец -->
+                        <path d="M 60 160 L 80 145 L 80 149 L 60 164 Z" fill="#d2d2d7" stroke="#86868b" stroke-width="0.5"/>
+                        
+                        <!-- Правый торец -->
+                        <path d="M 340 160 L 320 145 L 320 149 L 340 164 Z" fill="#d2d2d7" stroke="#86868b" stroke-width="0.5"/>
+                        
+                        <!-- Тяги -->
+                        <line x1="90" y1="30" x2="120" y2="160" stroke="#1d1d1f" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="200" y1="30" x2="200" y2="160" stroke="#1d1d1f" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="310" y1="30" x2="280" y2="160" stroke="#1d1d1f" stroke-width="1.5" stroke-linecap="round"/>
+                        
+                        <!-- Точки крепления сверху -->
+                        <circle cx="90" cy="30" r="2.5" fill="#1d1d1f"/>
+                        <circle cx="200" cy="30" r="2.5" fill="#1d1d1f"/>
+                        <circle cx="310" cy="30" r="2.5" fill="#1d1d1f"/>
+                        
+                        <!-- Точки крепления на козырьке -->
+                        <circle cx="120" cy="160" r="2.5" fill="#1d1d1f"/>
+                        <circle cx="200" cy="160" r="2.5" fill="#1d1d1f"/>
+                        <circle cx="280" cy="160" r="2.5" fill="#1d1d1f"/>
+                        
+                        <!-- Фоны для текста -->
+                        <rect x="5" y="87" width="20" height="16" rx="4" fill="white" stroke="#d2d2d7" stroke-width="1"/>
+                        <rect x="88" y="67" width="24" height="16" rx="4" fill="white" stroke="#d2d2d7" stroke-width="1"/>
+                        <rect x="198" y="67" width="24" height="16" rx="4" fill="white" stroke="#d2d2d7" stroke-width="1"/>
+                        <rect x="288" y="67" width="24" height="16" rx="4" fill="white" stroke="#d2d2d7" stroke-width="1"/>
+                        
+                        <!-- Высота -->
+                        <line x1="25" y1="30" x2="25" y2="160" stroke="#86868b" stroke-width="1" stroke-dasharray="3,3"/>
+                        <text x="15" y="95" text-anchor="middle" font-size="11" fill="#1d1d1f" font-weight="500" transform="rotate(-90, 15, 95)" id="height_display">500</text>
+                        
+                        <!-- Длины тяг -->
+                        <text x="100" y="77" text-anchor="middle" font-size="10" fill="#1d1d1f" font-weight="500" id="side_length_display">629</text>
+                        <text x="210" y="77" text-anchor="middle" font-size="10" fill="#1d1d1f" font-weight="500" id="center_length_display">622</text>
+                        <text x="300" y="77" text-anchor="middle" font-size="10" fill="#1d1d1f" font-weight="500" id="side_length_display2">629</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function calculate() {
+            const height = parseFloat(document.getElementById('height').value) || 0;
+            const depth = parseFloat(document.getElementById('depth').value) || 0;
+            
+            const centerEffectiveDepth = depth - 130;
+            const centerCableLength = Math.sqrt(height * height + centerEffectiveDepth * centerEffectiveDepth);
+            const sideCableLength = Math.sqrt(height * height + centerEffectiveDepth * centerEffectiveDepth + 94 * 94);
+            
+            document.getElementById('center_cable').textContent = Math.round(centerCableLength) + ' мм';
+            document.getElementById('side_cables').textContent = Math.round(sideCableLength) + ' мм';
+            
+            updateSchema(height, centerCableLength, sideCableLength);
+        }
+        
+        function updateSchema(height, centerLength, sideLength) {
+            document.getElementById('height_display').textContent = Math.round(height);
+            document.getElementById('center_length_display').textContent = Math.round(centerLength);
+            document.getElementById('side_length_display').textContent = Math.round(sideLength);
+            document.getElementById('side_length_display2').textContent = Math.round(sideLength);
+        }
+        
+        calculate();
+    </script>
+</body>
+</html>
