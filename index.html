@@ -266,8 +266,8 @@
             const height = parseFloat(document.getElementById('height').value) || 0;
             const depth = parseFloat(document.getElementById('depth').value) || 0;
             
-            const centerEffectiveDepth = depth - 130;
-            const centerCableLength = Math.sqrt(height * height + centerEffectiveDepth * centerEffectiveDepth);
+            const centerEffectiveDepth = depth - 100;
+            const centerCableLength = Math.sqrt(height * height + (centerEffectiveDepth - 20) * (centerEffectiveDepth - 20));
             const sideCableLength = Math.sqrt(height * height + centerEffectiveDepth * centerEffectiveDepth + 100 * 100);
             
             document.getElementById('center_cable').textContent = Math.round(centerCableLength) + ' мм';
