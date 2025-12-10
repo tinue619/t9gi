@@ -266,7 +266,7 @@
             const height = parseFloat(document.getElementById('height').value) || 0;
             const depth = parseFloat(document.getElementById('depth').value) || 0;
             
-            const centerEffectiveDepth = depth - 100;
+            const centerEffectiveDepth = depth - 200;
             const centerCableLength = (Math.sqrt((height-74) * (height-74) + (centerEffectiveDepth - 83) * (centerEffectiveDepth - 83))-35*2);
             const sideCableLength = (Math.sqrt((height-74) * (height-74) + (centerEffectiveDepth - 83) * (centerEffectiveDepth - 83) + 100 * 100)-35*2);
             
